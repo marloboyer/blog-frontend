@@ -27,15 +27,38 @@ export function Content() {
     setIsPostsShowVisible(false);
   };
 
+  const handleCreatePost = (params) => {
+    axios.post("http;//localhost:3000/posts.json", params).then((response) => {
+      console.log(response);
+      setPosts([...posts, response.data]);
+    });
+  };
+
+  const handleUpdatePost = (params, id) => {
+    axios.patch(`http://localhost:3000/posts/${id}.json`, params).then((response) => {
+      console.log(response.data);
+      setCurrentPost(response.data);
+      setPosts(
+        posts.map((recipe) => {
+          if (recipe.id === response.data.id) {
+            return response.data;
+          } else {
+            return recipe;
+          }
+        })
+      );
+    });
+  };
+
   useEffect(handleIndexPosts, []);
   return (
     <div>
       <SignUp />
       <Login />
       <Modal show={isPostsShowVisible} onClose={handleClose}>
-        <PostShow post={currentPost} />
+        <PostShow post={currentPost} onUpdateShowPost={handleShowPost} />
       </Modal>
-      <PostsNew />
+      <PostsNew onCreatePost={handleCreatePost} />
       <PostsIndex posts={posts} onShowPost={handleShowPost} />
     </div>
   );
