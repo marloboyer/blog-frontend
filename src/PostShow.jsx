@@ -1,16 +1,18 @@
 export function PostShow(props) {
-  const handleSumbit = (event) => {
+  const handleSumbit = event => {
     event.preventDefault();
     const params = new FormData(event.target);
     props.onUpdatePosts(params);
     event.target.reset();
   };
-
+  const handleClick = () => {
+    props.onDeletePost(props.post);
+  };
   return (
     <div>
       <p>{props.post.title}</p>
       <p>{props.post.body}</p>
-
+      <button onClick={handleClick}>Delete</button>
       <form>
         <form onSubmit={handleSumbit}></form>
         <label for="title">Title:</label>

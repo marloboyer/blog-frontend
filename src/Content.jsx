@@ -12,13 +12,13 @@ export function Content() {
   const [isPostsShowVisible, setIsPostsShowVisible] = useState(false);
   const [currentPost, setCurrentPost] = useState({});
   const handleIndexPosts = () => {
-    axios.get("http://localhost:3000/posts.json").then(function (response) {
+    axios.get("http://localhost:3000/posts.json").then(function(response) {
       console.log(response);
       setPosts(response.data);
     });
   };
 
-  const handleShowPost = (post) => {
+  const handleShowPost = post => {
     setIsPostsShowVisible(true);
     setCurrentPost(post);
   };
@@ -27,19 +27,19 @@ export function Content() {
     setIsPostsShowVisible(false);
   };
 
-  const handleCreatePost = (params) => {
-    axios.post("http;//localhost:3000/posts.json", params).then((response) => {
+  const handleCreatePost = params => {
+    axios.post("http;//localhost:3000/posts.json", params).then(response => {
       console.log(response);
       setPosts([...posts, response.data]);
     });
   };
 
   const handleUpdatePost = (params, id) => {
-    axios.patch(`http://localhost:3000/posts/${id}.json`, params).then((response) => {
+    axios.patch(`http://localhost:3000/posts/${id}.json`, params).then(response => {
       console.log(response.data);
       setCurrentPost(response.data);
       setPosts(
-        posts.map((recipe) => {
+        posts.map(recipe => {
           if (recipe.id === response.data.id) {
             return response.data;
           } else {
@@ -50,13 +50,21 @@ export function Content() {
     });
   };
 
+  const handleDeletePost = post => {
+    axios.delete(`http://localhost:3000/posts/${post.id}.json`).then(response => {
+      console.log(response.data);
+      setPosts(posts.filter(r => r.id !== post.id));
+      handleClose();
+    });
+  };
+
   useEffect(handleIndexPosts, []);
   return (
     <div>
       <SignUp />
       <Login />
       <Modal show={isPostsShowVisible} onClose={handleClose}>
-        <PostShow post={currentPost} onUpdateShowPost={handleShowPost} />
+        <PostShow post={currentPost} onUpdateShowPost={handleShowPost} onDeletePost={handleDeletePost} />
       </Modal>
       <PostsNew onCreatePost={handleCreatePost} />
       <PostsIndex posts={posts} onShowPost={handleShowPost} />
