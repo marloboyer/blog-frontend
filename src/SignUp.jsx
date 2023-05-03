@@ -6,18 +6,18 @@ export function SignUp() {
   const [name, setName] = useState("");
   const [status, setStatus] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     setErrors([]);
     const params = new FormData(event.target);
     axios
       .post("http://localhost:3000/users.json", params)
-      .then((response) => {
+      .then(response => {
         console.log(response.data);
         event.target.reset();
         window.location.href = "/"; // Change this to hide a modal, redirect to a specific page, etc.
       })
-      .catch((error) => {
+      .catch(error => {
         console.log(error.response.data.errors);
         setErrors(error.response.data.errors);
         setStatus(error.response.status);
@@ -28,7 +28,7 @@ export function SignUp() {
     <div id="signup">
       <h1>Signup</h1>
       <ul>
-        {errors.map((error) => (
+        {errors.map(error => (
           <li key={error}>{error}</li>
         ))}
         {status ? <img src={`https://http.cat/${status}`} /> : null}
@@ -36,13 +36,7 @@ export function SignUp() {
       <form onSubmit={handleSubmit}>
         <div>
           Name:{" "}
-          <input
-            name="name"
-            type="text"
-            maxlength="20"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
+          <input name="name" type="text" maxLength="20" value={name} onChange={event => setName(event.target.value)} />
         </div>
         <small>{20 - name.length} characters remaining</small>
         <div>

@@ -6,6 +6,7 @@ import { Modal } from "./Modal";
 import { PostShow } from "./PostShow";
 import { SignUp } from "./SignUp";
 import { Login } from "./Login";
+import { Routes, Route } from "react-router-dom";
 
 export function Content() {
   const [posts, setPosts] = useState([]);
@@ -28,9 +29,9 @@ export function Content() {
   };
 
   const handleCreatePost = params => {
-    axios.post("http;//localhost:3000/posts.json", params).then(response => {
+    axios.post("http://localhost:3000/posts.json", params).then(response => {
       console.log(response);
-      setPosts([...posts, response.data]);
+      window.location.href = "/";
     });
   };
 
@@ -61,13 +62,16 @@ export function Content() {
   useEffect(handleIndexPosts, []);
   return (
     <div>
-      <SignUp />
-      <Login />
+      <Routes>
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/postsnew" element={<PostsNew onCreatePost={handleCreatePost} />} />
+        <Route path="/posts" element={<PostsIndex posts={posts} onShowPost={handleShowPost} />} />
+        <Route path="/" element={<PostsIndex posts={posts} onShowPost={handleShowPost} />} />
+      </Routes>
       <Modal show={isPostsShowVisible} onClose={handleClose}>
-        <PostShow post={currentPost} onUpdateShowPost={handleShowPost} onDeletePost={handleDeletePost} />
+        <PostShow post={currentPost} onUpdatePosts={handleUpdatePost} onDeletePost={handleDeletePost} />
       </Modal>
-      <PostsNew onCreatePost={handleCreatePost} />
-      <PostsIndex posts={posts} onShowPost={handleShowPost} />
     </div>
   );
 }

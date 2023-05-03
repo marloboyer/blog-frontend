@@ -1,9 +1,9 @@
 export function PostsNew(props) {
-  const handleSumbit = (event) => {
+  const handleSumbit = event => {
     event.preventDefault();
     console.log("handleSumbit");
     const params = new FormData(event.target);
-    props.onCreatePosts(params);
+    props.onCreatePost(params);
     event.target.reset();
   };
 
@@ -11,13 +11,12 @@ export function PostsNew(props) {
     <div>
       <h1>New post</h1>
 
-      <form>
-        <form onSubmit={handleSumbit}></form>
-        <label for="title">Title:</label>
+      <form onSubmit={handleSumbit}>
+        <label htmlFor="title">Title:</label>
         <input name="title" type="text" id="title"></input>
-        <label for="body">Body:</label>
+        <label htmlFor="body">Body:</label>
         <input name="body" type="text" id="body"></input>
-        <label for="url">URL:</label>
+        <label htmlFor="url">URL:</label>
         <input name="url" type="url" id="homepage"></input>
         <button type="sumbit">Create Post</button>
       </form>
